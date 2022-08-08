@@ -16,19 +16,18 @@ const options = {
     time_24h: true,
     defaultDate: new Date(),
     minuteIncrement: 1,
-    onClose(selectedDate) {
-        if (selectedDate[0].getTime() <= options.defaultDate.getTime()) {
+    onClose(selectedDates) {
+        if (selectedDates[0] <= new Date()) {
             Notiflix.Notify.failure('Please choose a valid date');
         } else {
             startBtn.disabled = false;
-            localStorage.setItem('date', `${selectedDate[0].getTime()}`);
         };
     },
 };
 
 flatpickr(input, options);
 
-function convertMS(ms) {
+function convertMs(ms) {
     const second = 1000;
     const minute = second * 60;
     const hour = minute * 60;
@@ -43,11 +42,7 @@ function convertMS(ms) {
 };
 
 function addLeadingZero(num) {
-    if (num < 10) {
         return num.toString().padStart(2, '0');
-    } else {
-        return num;
-    };
 };
 
 startBtn.addEventListener('click', () => {
@@ -56,7 +51,7 @@ startBtn.addEventListener('click', () => {
         const today = new Date();
         const time = today.getTime();
         const ms = dateSelect - time;
-        const cvtDate = convertMS(ms);
+        const cvtDate = convertMs(ms);
         if (ms < 1000) {
             clearInterval(timerID);
         };
