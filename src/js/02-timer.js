@@ -1,4 +1,4 @@
-import flatpickr from "flatpickr";
+import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 import Notiflix from 'notiflix';
 
@@ -13,15 +13,16 @@ startBtn.disabled = true;
 
 const options = {
     enableTime: true,
-    time_24h: true,
+    time_24hr: true,
     defaultDate: new Date(),
     minuteIncrement: 1,
     onClose(selectedDates) {
-        if (selectedDates[0] <= new Date()) {
+        if (selectedDates[0] < options.defaultDate) {
             Notiflix.Notify.failure('Please choose a valid date');
+            startBtn.disabled = true;
         } else {
             startBtn.disabled = false;
-        };
+        }
     },
 };
 
@@ -42,26 +43,21 @@ function convertMs(ms) {
 };
 
 function addLeadingZero(num) {
-        return num.toString().padStart(2, '0');
+    return num.toString().padStart(2, '0');
 };
 
 startBtn.addEventListener('click', () => {
-    const initialization = () => {
-        const dateSelect = localStorage.getItem('date');
-        const today = new Date();
-        const time = today.getTime();
-        const ms = dateSelect - time;
-        const cvtDate = convertMs(ms);
-        if (ms < 1000) {
-            clearInterval(timerID);
-        };
-        const getDifference = () => {
-            dataDays.textContent = `${addLeadingZero(cvtDate.days)}`;
-            dataHours.textContent = `${addLeadingZero(cvtDate.hours)}`;
-            dataMinutes.textContent = `${addLeadingZero(cvtDate.minutes)}`;
-            dataSeconds.textContent = `${addLeadingZero(cvtDate.seconds)}`;
-        };
-        getDifference();
-    };
-    const timerID = setInterval(initialization, 1000);
+    let initialization = setInterval(() => {
+        let countdown = new Date(input.value) - new Date();
+        startBtn.disabled = true;
+        if (countdown >= 0) {
+            let time = convertMs(countdown);
+            dataDays.textContent = addLeadingZero(time.days);
+            dataHours.textContent = addLeadingZero(time.hours);
+            dataMinutes.textContent = addLeadingZero(time.minutes);
+            dataSeconds.textContent = addLeadingZero(time.seconds);
+        } else {
+            clearInterval(initialization);
+        }
+    }, 1000);
 });
