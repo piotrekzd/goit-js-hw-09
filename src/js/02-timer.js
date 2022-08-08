@@ -3,7 +3,7 @@ import 'flatpickr/dist/flatpickr.min.css';
 import Notiflix from 'notiflix';
 
 const input = document.querySelector('#datetime-picker');
-const startBtn = document.querySelector('button[start-data]');
+const startBtn = document.querySelector('button[data-start]');
 const dataDays = document.querySelector('span[data-days]');
 const dataHours = document.querySelector('span[data-hours]');
 const dataMinutes = document.querySelector('span[data-minutes]');
@@ -61,3 +61,8 @@ startBtn.addEventListener('click', () => {
         }
     }, 1000);
 });
+
+input.style.width = '300px';
+input.style.fontSize = '24px';
+
+startBtn.style.fontSize = '24px';
